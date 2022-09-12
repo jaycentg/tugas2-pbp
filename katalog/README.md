@@ -36,4 +36,4 @@ Tahapan yang saya lakukan dalam mengimplementasikan langkah 1 sampai 4:
 7. Sampai tahap ini, halaman web sudah jadi dan siap untuk di-*deploy*. Untuk men-*deploy* halaman web ini, saya membuat suatu aplikasi baru pada Heroku, lalu menyambungkan aplikasi tersebut dengan GitHub Repository yang berisi kode-kode dari halaman web. Tidak lupa juga saya menambahkan `HEROKU_API_KEY` dan `HEROKU_APP_NAME` pada `repository secret` GitHub. Setelah itu, saya menjalankan kembali *workflow* yang gagal hingga halaman web berhasil ter-*deploy* dengan baik.
 
 ### Referensi
-..* https://www.anbidev.com/python-virtual-environtment/
+https://www.anbidev.com/python-virtual-environtment/
