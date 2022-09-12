@@ -1,8 +1,8 @@
 # Penjelasan Tugas 2 PBP
 
 ## Identitas
-Nama  : Jaycent Gunawan Ongris
-NPM   : 2106750231
+Nama  : Jaycent Gunawan Ongris<br>
+NPM   : 2106750231<br>
 Kelas : F
 
 ## Link Hasil Deploy
