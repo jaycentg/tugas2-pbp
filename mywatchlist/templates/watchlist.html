@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+ {% block content %}
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap" rel="stylesheet">
+  <h1>Lab 2 Assignment PBP/PBD</h1>
+
+  <table style="margin-left: auto; margin-right: auto;">
+    <tr>
+      <th style="padding: 5px;">Watched</th>
+      <th style="padding: 5px;">Title</th>
+      <th style="padding: 5px;">Rating</th>
+      <th style="padding: 5px;">Release Date</th>
+      <th style="padding: 5px;">Review</th>
+    </tr>
+
+
+    {% comment %} Add the data below this line {% endcomment %}
+    {% for movie in list_watchlist %}
+    <tr>
+        <th style="font-weight: normal;">{{movie.watched}}</th>
+        <th style="font-weight: normal;">{{movie.title}}</th>
+        <th style="font-weight: normal;">{{movie.rating}}</th>
+        <th style="font-weight: normal;">{{movie.release_date}}</th>
+        <th style="font-weight: normal;">{{movie.review}}</th>
+    </tr>
+    {% endfor %}
+    </table>
+    
+    {% if watched >= not_watched %}
+    <h3 style="text-align: center;">Selamat, kamu sudah banyak menonton!</h3>
+    {% else %}
+    <h3 style="text-align: center;">Wah, kamu masih sedikit menonton!</h3>
+    {% endif %}
+
+ {% endblock content %}

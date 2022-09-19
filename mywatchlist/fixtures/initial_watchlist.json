@@ -1,0 +1,112 @@
+[
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":1,
+        "fields":{
+            "watched":"False",
+            "title":"Top Gun: Maverick",
+            "rating": "4",
+            "release_date":"2022-05-27",
+            "review":"Tom Cruise really knows how a blockbuster film is made."
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":2,
+        "fields":{
+            "watched":"True",
+            "title":"Doctor Strange in the Multiverse of Madness",
+            "rating": "4",
+            "release_date":"2022-05-06",
+            "review":"Time to retire the MCU"
+        }
+    },    
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":3,
+        "fields":{
+            "watched":"True",
+            "title":"Spider-Man: No Way Home",
+            "rating": "5",
+            "release_date":"2021-12-17",
+            "review":"They did it! A Spider-Man trilogy finally stuck the landing!"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":4,
+        "fields":{
+            "watched":"True",
+            "title":"The Dark Knight",
+            "rating": "5",
+            "release_date":"2008-07-18",
+            "review":"A Batman Of Shakesperean Proportions"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":5,
+        "fields":{
+            "watched":"False",
+            "title":"The Godfather",
+            "rating": "5",
+            "release_date":"1972-03-24",
+            "review":"#2 on IMDb's Top 100, a multi-Oscar-winner and over 1500 reviews...what more can I say about the movie?!"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":6,
+        "fields":{
+            "watched":"True",
+            "title":"Thor",
+            "rating": "3",
+            "release_date":"2011-05-06",
+            "review":"Incredible Action and Fantasy but with a Superb Story! Best in Years!"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":7,
+        "fields":{
+            "watched":"True",
+            "title":"Justice League",
+            "rating": "2",
+            "release_date":"2017-11-17",
+            "review":"DC Hasn't Learned from their Mistakes"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":8,
+        "fields":{
+            "watched":"False",
+            "title":"Everything Everywhere All at Once",
+            "rating": "5",
+            "release_date":"2022-03-25",
+            "review":"You do or you don't."
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":9,
+        "fields":{
+            "watched":"False",
+            "title":"Interstellar",
+            "rating": "5",
+            "release_date":"2014-11-07",
+            "review":"Glad i didn't watch the trailer"
+        }
+    },
+    {
+        "model": "mywatchlist.mywatchlist",
+        "pk":10,
+        "fields":{
+            "watched":"True",
+            "title":"Despicable Me",
+            "rating": "3",
+            "release_date":"2010-07-09",
+            "review":"Lots to Love"
+        }
+    }
+]
