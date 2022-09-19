@@ -1,4 +1,4 @@
-# Penjelasan Tugas 2 PBP
+# Penjelasan Tugas 3 PBP
 
 ## Identitas
 Nama    : Jaycent Gunawan Ongris<br>
@@ -6,34 +6,58 @@ NPM     : 2106750231<br>
 Kelas   : F
 
 ## Link Hasil Deploy
-Link untuk menuju ke web yang sudah di-deploy dapat diklik di [sini](https://tugas-pbp-2.herokuapp.com/katalog/).
+Link untuk menuju ke web yang sudah di-deploy dapat diklik:
+1. [HTML](https://tugas-pbp-2.herokuapp.com/mywatchlist/html/)
+2. [JSON](https://tugas-pbp-2.herokuapp.com/mywatchlist/json/)
+3. [XML](https://tugas-pbp-2.herokuapp.com/mywatchlist/xml/)
+
+## Screenshots dari Postman
+### HTML
+![image](https://user-images.githubusercontent.com/88029772/191031191-7cbabe5d-308f-4d1e-95c3-a90b727c7c95.png)
+### JSON
+![image](https://user-images.githubusercontent.com/88029772/191031348-52d174f1-cbd9-4f77-8dd1-b32b0735d5aa.png)
+### XML
+![image](https://user-images.githubusercontent.com/88029772/191031414-b589b70d-1416-4189-bde2-352a7e1c0b7a.png)
+
 
 ## Jawaban dari Pertanyaan
-### Bagan *Request Client*
-![bagan](https://user-images.githubusercontent.com/88029772/189681692-6527e06e-05f8-490f-86f6-c6c076742bd2.png)
-Penjelasan terkait bagan tersebut adalah sebagai berikut.
-1. *Client* akan melakukan *request*.
-2. *Request* yang masuk akan diproses pada `urls.py` berdasarkan *routes* yang ada di `urlpatterns`.
-3. *Request* lalu diproses pada `views.py` oleh fungsi-fungsi yang terkait.
-4. Jika perlu untuk mengakses *database*, `views.py` ini akan memanggil *query* ke `models.py` yang terhubung dengan *database*.
-5. *Database* akan memberikan respons data yang merupakan hasil pemanggilan *query* ke `views.py`.
-6. Respons data yang sudah didapatkan kemudian dipetakan ke berkas HTML yang sesuai untuk kemudian siap dilakukan *render*.
-7. Berkas HTML ditampilkan sebagai respons.
+### Perbedaan JSON, XML, dan HTML
+JSON (JavaScript Object Notation) adalah suatu format *file* turunan dari bahasa pemrograman JavaScript yang ditujukan untuk proses penyimpanan dan transportasi data. JSON memiliki alternatif yang juga banyak digunakan untuk tujuan yang sama, yaitu XML. XML (eXtensible Markup Language) merupakan *markup language* yang didesain untuk menyimpan dan mengirimkan data. Sementara itu, sama seperti XML, HTML (HyperText Markup Language) juga merupakan *markup language*, tetapi bedanya HTML didesain khusus untuk menampilkan data. 
 
-### Virtual Environment
-Penggunaan *virtual environment* untuk pembuatan proyek Django diperlukan untuk mengisolasi modul-modul yang diperlukan oleh suatu proyek dari proyek lain. Dengan adanya *virtual environment*, tiap proyek dapat mengelola modul-modulnya sendiri secara terpisah agar dapat berjalan dengan baik. Jika memanfaatkan *global environment*, ada kemungkinan timbulnya isu perbedaan versi modul jika *user* secara global meng-*update* modul yang seharusnya tidak di-*update* untuk proyek tersebut, demi keperluan proyek yang lain. Akibatnya, proyek tersebut berpotensi tidak berjalan dengan baik.<br>
+Berikut adalah perbedaan JSON, XML, dan HTML.
+1. JSON dan XML memiliki tujuan untuk penyimpanan dan transportasi data, sedangkan HTML khusus untuk menampilkan data.
+2. XML dan HTML memiliki sintaks yang mirip, yaitu menggunakan *opening* dan *closing tags*, sementara itu JSON memiliki sintaks yang serupa dengan *object* pada JavaScript.
 
-Kita masih bisa membuat aplikasi web berbasis Django tanpa *virtual environment*. Akan tetapi, hal ini tentu saja tidak direkomendasikan karena berpotensi menimbulkan konflik antara satu proyek dan proyek lainnya jika misalnya untuk suatu modul yang sama diperlukan dua versi yang berbeda untuk masing-masing proyek.
+Sementara itu, secara khusus, berikut adalah perbedaan dari JSON dan XML dalam konteks penyimpanan dan transportasi data.
+1. JSON mendukung penggunaan *array*, sedangkan XML tidak.
+2. Sintaks JSON lebih ringkas dan mudah dipahami jika dibandingkan dengan XML.
+3. File JSON lebih ringan dan cepat jika dibandingkan dengan XML.
+4. Untuk *browser* yang tidak terlalu aman, JSON lebih rentan terhadap serangan *hacking* dibanding XML.
+5. JSON tidak menggunakan *tag*, sedangkan XML membutuhkan *tag* pembuka dan *tag* penutup.
 
-### Tahap-Tahap Implementasi Langkah 1 — 4
-Tahapan yang saya lakukan dalam mengimplementasikan langkah 1 sampai 4:
-1. Saya membuat fungsi `show_catalog` pada `katalog\views.py` yang menerima parameter `request` yang merupakan *request* dari *client*. Fungsi ini yang melakukan pengambilan data dari *database* melalui `models`, lalu hasilnya dipetakan pada `katalog\templates\katalog.html` untuk ditampilkan berdasarkan *context* yang disediakan.
-2. Selanjutnya, saya membuat *route* pada `katalog\urls.py` dengan membuat variabel `urlpatterns` dan memasukkan `path('', show_catalog, name='show_catalog')` ke *list* `urlpatterns` tersebut agar *route* tersebut terhubung dengan fungsi `show_catalog` yang sudah dibuat pada `katalog\views.py` sebelumnya. Saya juga memasukkan *route* tersebut ke `urlpatterns` pada `project_django\urls.py` dengan menambahkan `path('katalog/', include('katalog.urls'))`.
-3. Setelah itu, saya membuat *migration* berdasarkan model dengan menjalankan `python manage.py makemigrations`. Setelah itu, saya menerapkan *migration* tersebut ke *database* Django dengan menjalankan `python manage.py migrate`. Setelah itu, data pada *file* `.json` yang sudah terdapat pada *folder* `katalog/fixtures` akan di-*load* ke *database* dengan menjalankan `python manage.py loaddata initial_catalog_data.json`.
-4. Setelah data di-*load*, selanjutnya akan dilakukan pemetaan data-data tersebut ke `katalog\templates\katalog.html` agar data siap ditampilkan pada halaman web. Pada berkas HTML tersebut, tabel katalog akan diisi dengan data yang diiterasi satu persatu dari *list* berisi barang-barang katalog dengan memanfaatkan sintaks *template tags*.
-5. \[BONUS\] Saya juga mengimplementasikan *testing* pada proyek ini untuk *model*, *url*, dan *view* pada `katalog/tests.py`. Selain itu, untuk memperindah tampilan halaman web, saya juga melakukan *styling* berdasarkan *file stylesheet* yang saya buat pada `static/css/style.css`. 
-6. Terakhir, sebelum melakukan *deploy*, saya akan menambahkan konfigurasi terkait `PROJECT_ROOT` dan `STATIC_ROOT` pada `project_django/settings.py`. Konfigurasi lain seperti `ALLOWED_HOSTS` dan `MIDDLEWARE` tidak saya tambahkan karena sudah ada dari *template* tugas ini. Lalu, saya melakukan *add*, *commit*, dan *push* ke GitHub.
-7. Sampai tahap ini, halaman web sudah jadi dan siap untuk di-*deploy*. Untuk men-*deploy* halaman web ini, saya membuat suatu aplikasi baru pada Heroku, lalu menyambungkan aplikasi tersebut dengan GitHub Repository yang berisi kode-kode dari halaman web. Tidak lupa juga saya menambahkan `HEROKU_API_KEY` dan `HEROKU_APP_NAME` pada `repository secret` GitHub. Setelah itu, saya menjalankan kembali *workflow* yang gagal hingga halaman web berhasil ter-*deploy* dengan baik.
+Secara khusus, berikut adalah perbedaan dari XML dan HTML.
+1. XML berfungsi untuk penyimpanan dan transportasi data, sedangkan HTML untuk menampilkan data.
+2. XML bersifat *case sensitive*, sedangkan HTML bersifat *case insensitive*.
+3. XML dalam penerapannya bebas menggunakan *tag* yang dibuat sendiri, hanya saja wajib ada *tag* penutupnya, sedangkan HTML hanya bisa menggunakan *tag* tertentu yang sesuai dan terkadang tidak memerlukan *tag* penutup.
+4. XML bersifat dinamis karena digunakan untuk transfer data, sedangkan HTML bersifat statis karena hanya digunakan untuk menampilkan data.
+
+### Pentingnya Data Delivery
+Data delivery penting dalam pengembangan aplikasi pada suatu platform sebagai sarana untuk mengirimkan data antarstack yang digunakan dalam aplikasi tersebut. Dengan adanya data delivery, kita dapat mengirimkan, menyimpan, dan menggunakan data yang dibutuhkan.
+
+### Tahap-Tahap Implementasi Checklist
+Tahapan yang saya lakukan dalam mengimplementasikan checklist:
+1. Pertama-tama, saya membuat suatu aplikasi baru yang bernama "mywatchlist" dengan menjalankan perintah `python manage.py startapp mywatchlist` dan menambahkan `mywatchlist` ke `INSTALLED_APPS` di `settings.py`.
+2. Setelah itu, saya mengisi `models.py` dengan membuat *class* `MyWatchList` yang berisi atribut-atribut yang sesuai dengan *checklist* yang diberikan dengan tipe data yang sesuai. Lalu, saya melakukan *migration* dengan menjalankan `python manage.py makemigrations` dan `python manage.py migrate`. Selanjutnya, saya membuat file `initial_watchlist.json` di `fixtures` yang berisi 10 inisial data terkait film yang akan dimasukkan ke *database*. Setelah itu, data tersebut di-*load* ke *database* dengan menjalankan perintah `python manage.py loaddata initial_watchlist.json`. 
+3. Selanjutnya, saya membuat *folder* `templates` di direktori `mywatchlist` dan mengisi *folder* tersebut dengan dua buah *file* HTML yang akan ditampilkan pada `localhost:8000/mywatchlist` dan `localhost:8000/mywatchlist/html`. Untuk yang `localhost:8000/mywatchlist` saya hanya menggunakan *file* HTML kosong, yaitu `empty.html` dikarenakan *file* tersebut hanya untuk keperluan *routing*, dan data yang sebenarnya akan ditampilkan pada `localhost:8000/mywatchlist/html`, yaitu `watchlist.html`.
+4. Setelah itu, saya mengedit file `views.py` di *folder* `mywatchlist` dan menambahkan fungsi-fungsi yang diperlukan, seperti `show_watchlist` untuk `localhost:8000/mywatchlist`, `show_html` untuk `localhost:8000/mywatchlist/html`, `show_xml` untuk `localhost:8000/mywatchlist/xml`, dan `show_json` untuk `localhost:8000/mywatchlist/json`. Fungsi `show_html` akan menampilkan page HTML `watchlist.html`, `show_xml` akan menampilkan data dalam bentuk XML, dan `show_json` akan menampilkan data dalam bentuk JSON.
+5. \[BONUS\] Lalu, saya menambahkan *logic* untuk menghitung jumlah film yang sudah ditonton pada fungsi `show_html` untuk kemudian dimasukkan pada `context` agar dapat ditampilkan hasilnya di `localhost:8000/mywatchlist/html`.
+6. Sehabis itu, saya kemudian mengedit *file* `watchlist.html` yang telah dibuat dengan memasukkan hasil modifikasi *template* HTML dari tugas sebelumnya, termasuk menambahkan pesan terkait jumlah film yang sudah ditonton.
+7. Selanjutnya, saya menambahkan `path('mywatchlist/', include('mywatchlist.urls'))` di `urlpatterns` pada `urls.py` di `project_django`. Lalu, menambahkan `app_name = 'mywatchlist'` dan `urlpatterns = [path('', show_watchlist, name='show_watchlist'),path('html/', show_html, name='show_html'),path('xml/', show_xml, name='show_xml'),path('json/', show_json, name='show_json'),]` di `urls.py` milik *folder* `mywatchlist` setelah fungsi-fungsi tersebut diimpor ke dalam file tersebut.
+8. Setelah itu, saya mempersiapkan *testing* pada *tests.py* untuk mengecek apakah URL `localhost:8000/mywatchlist/html`, `localhost:8000/mywatchlist/xml`, dan `localhost:8000/mywatchlist/json` mengembalikan respon `HTTP 200 OK`. Hal ini diimplementasikan dengan membuat tiga fungsi untuk masing-masing URL, melakukan `get` dari URL tersebut dan mengecek apakah `status_code`-nya 200 atau bukan.
+9. Selanjutnya, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*. 
 
 ### Referensi
-https://www.anbidev.com/python-virtual-environtment/
+https://www.dicoding.com/blog/apa-itu-json/<br>
+https://www.geeksforgeeks.org/difference-between-json-and-xml/<br>
+https://www.geeksforgeeks.org/html-vs-xml/<br>
+https://www.dewaweb.com/blog/apa-itu-xml/<br>
