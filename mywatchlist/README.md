@@ -6,9 +6,19 @@ NPM     : 2106750231<br>
 Kelas   : F
 
 ## Link Hasil Deploy
-Link untuk menuju ke web yang sudah di-deploy dapat diklik di [sini](https://tugas-pbp-2.herokuapp.com/katalog/).
+Link untuk menuju ke web yang sudah di-deploy dapat diklik:
+1. [HTML](https://tugas-pbp-2.herokuapp.com/mywatchlist/html/)
+2. [JSON](https://tugas-pbp-2.herokuapp.com/mywatchlist/json/)
+3. [XML](https://tugas-pbp-2.herokuapp.com/mywatchlist/xml/)
 
 ## Screenshots dari Postman
+### HTML
+![image](https://user-images.githubusercontent.com/88029772/191031191-7cbabe5d-308f-4d1e-95c3-a90b727c7c95.png)
+### JSON
+![image](https://user-images.githubusercontent.com/88029772/191031348-52d174f1-cbd9-4f77-8dd1-b32b0735d5aa.png)
+### XML
+![image](https://user-images.githubusercontent.com/88029772/191031414-b589b70d-1416-4189-bde2-352a7e1c0b7a.png)
+
 
 ## Jawaban dari Pertanyaan
 ### Perbedaan JSON, XML, dan HTML
@@ -47,7 +57,7 @@ Tahapan yang saya lakukan dalam mengimplementasikan checklist:
 9. Selanjutnya, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*. 
 
 ### Referensi
-https://www.dicoding.com/blog/apa-itu-json/
-https://www.geeksforgeeks.org/difference-between-json-and-xml/
-https://www.geeksforgeeks.org/html-vs-xml/
-https://www.dewaweb.com/blog/apa-itu-xml/
+https://www.dicoding.com/blog/apa-itu-json/<br>
+https://www.geeksforgeeks.org/difference-between-json-and-xml/<br>
+https://www.geeksforgeeks.org/html-vs-xml/<br>
+https://www.dewaweb.com/blog/apa-itu-xml/<br>
