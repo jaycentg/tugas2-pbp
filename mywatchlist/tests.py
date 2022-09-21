@@ -1,6 +1,6 @@
 from django.test import TestCase, Client
 
-class Tetsing(TestCase):
+class Testing(TestCase):
     def test_html(self):
         response = Client().get('/mywatchlist/html/')
         self.assertEqual(response.status_code, 200)
