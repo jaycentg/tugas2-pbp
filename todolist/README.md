@@ -6,7 +6,7 @@ NPM     : 2106750231<br>
 Kelas   : F
 
 ## Link Hasil Deploy
-Link untuk menuju ke web yang sudah di-deploy dapat diklik di.
+Link untuk menuju ke web yang sudah di-deploy dapat diklik di [sini](https://tugas-pbp-2.herokuapp.com/todolist/login/).
 
 ## Jawaban dari Pertanyaan
 ### Kegunaan CSRF Token
@@ -37,7 +37,8 @@ Tahapan yang saya lakukan dalam mengimplementasikan checklist:
 14. Selanjutnya, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*.
 
 ### Username dan Password
-
+1. USERNAME: dummy1   PASSWORD: abc43210987
+2. USERNAME: dummy2   PASSWORD: 0987abcd4321
 
 ### Referensi
 https://www.educative.io/answers/what-is-a-csrf-token-in-django<br>
