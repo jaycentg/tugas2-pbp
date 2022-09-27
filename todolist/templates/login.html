@@ -40,11 +40,9 @@
     </form>
 
     {% if messages %}
-        <ul>
             {% for message in messages %}
-                <li>{{ message }}</li>
+                <p style="text-align: center;">{{ message }}</p>
             {% endfor %}
-        </ul>
     {% endif %}     
         
     <p style="text-align: center;">No account? <a href="{% url 'todolist:register' %}">Create a new one</a></p>
