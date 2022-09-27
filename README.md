@@ -1,4 +1,4 @@
-# Penjelasan Tugas 3 PBP
+# Penjelasan Tugas 4 PBP
 
 ## Identitas
 Nama    : Jaycent Gunawan Ongris<br>
@@ -6,58 +6,39 @@ NPM     : 2106750231<br>
 Kelas   : F
 
 ## Link Hasil Deploy
-Link untuk menuju ke web yang sudah di-deploy dapat diklik:
-1. [HTML](https://tugas-pbp-2.herokuapp.com/mywatchlist/html/)
-2. [JSON](https://tugas-pbp-2.herokuapp.com/mywatchlist/json/)
-3. [XML](https://tugas-pbp-2.herokuapp.com/mywatchlist/xml/)
-
-## Screenshots dari Postman
-### HTML
-![image](https://user-images.githubusercontent.com/88029772/191031191-7cbabe5d-308f-4d1e-95c3-a90b727c7c95.png)
-### JSON
-![image](https://user-images.githubusercontent.com/88029772/191031348-52d174f1-cbd9-4f77-8dd1-b32b0735d5aa.png)
-### XML
-![image](https://user-images.githubusercontent.com/88029772/191031414-b589b70d-1416-4189-bde2-352a7e1c0b7a.png)
-
+Link untuk menuju ke web yang sudah di-deploy dapat diklik di [sini](https://tugas-pbp-2.herokuapp.com/todolist/login/).
 
 ## Jawaban dari Pertanyaan
-### Perbedaan JSON, XML, dan HTML
-JSON (JavaScript Object Notation) adalah suatu format *file* turunan dari bahasa pemrograman JavaScript yang ditujukan untuk proses penyimpanan dan transportasi data. JSON memiliki alternatif yang juga banyak digunakan untuk tujuan yang sama, yaitu XML. XML (eXtensible Markup Language) merupakan *markup language* yang didesain untuk menyimpan dan mengirimkan data. Sementara itu, sama seperti XML, HTML (HyperText Markup Language) juga merupakan *markup language*, tetapi bedanya HTML didesain khusus untuk menampilkan data. 
+### Kegunaan CSRF Token
+CSRF Token yang dimasukkan pada berkas *form* berfungsi untuk mencegah serangan yang berupa CSRF (Cross Site Request Forgery). Serangan ini akan memanfaatkan *state user* yang sudah terautentikasi untuk melakukan aksi yang tidak seharusnya *user* ingin lakukan, seperti mengubah *request* dari *user* pada aplikasi. CSRF Token dalam implementasinya akan di-*generate* pada *server-side* saat halaman di-*render* dan token ini akan dicocokkan dengan *request* yang masuk. Jika hasil pencocokkan tidak sesuai, maka *request* tidak akan dilayani.<br>
+Tentu saja kita tetap masih bisa menjalankan aplikasi tanpa CSRF Token ini, yang dapat dilakukan dengan menambahkan potongan kode `@csrf_exempt` di atas definisi fungsi yang bersesuaian di `views.py`. Akan tetapi, hal ini sangat tidak disarankan untuk dilakukan karena dapat meningkatkan potensi terjadinya serangan CSRF oleh oknum yang tidak bertanggung jawab.
 
-Berikut adalah perbedaan JSON, XML, dan HTML.
-1. JSON dan XML memiliki tujuan untuk penyimpanan dan transportasi data, sedangkan HTML khusus untuk menampilkan data.
-2. XML dan HTML memiliki sintaks yang mirip, yaitu menggunakan *opening* dan *closing tags*, sementara itu JSON memiliki sintaks yang serupa dengan *object* pada JavaScript.
+### Pembuatan Form secara Manual
+Ya, tentu saja *form* dapat dibuat secara manual tanpa memanfaatkan *template* yang di-*generate* dari Django, salah satu contohnya adalah *form* untuk menambahkan *task* pada aplikasi ini. Saya juga membuat *form* tersebut tanpa menggunakan `forms.py`. Cara yang saya lakukan dalam membuat *form* tersebut adalah membuat suatu berkas HTML yang akan diisi dengan *form* tersebut, lalu membuat tag pembuka dan penutup untuk *form*, yaitu `<form>...</form>`, lalu ditambahkan *attribute* yang bersesuaian, dalam hal ini saya menggunakan *method* `POST` yang dijadikan nilai dari *attribute* `method`. Selain itu, dapat ditambahkan juga *attribute* `action` yang dapat berisi *URL Destination* dari *form*. Kemudian, di dalam tag tersebut, dapat ditambahkan elemen-elemen HTML yang dapat digunakan bagi *user* untuk meng-*input* data, seperti `<input>...</input>`, `<textarea>...</textarea>`, dan sebagainya. Lalu, tambahkan atribut-atribut yang diperlukan pada tag tersebut. Salah satu atribut yang penting adalah `name`, karena `value` dari atribut ini akan digunakan untuk mendapatkan data yang dimasukkan *user* pada *field* tersebut. Selanjutnya, kita dapat membuat fungsi pada `views.py` yang akan mengambil data yang sudah dimasukkan oleh *user*. Pengambilan data tersebut dapat dengan menggunakan `request.POST.get('attribute')` atau `request.POST['attribute']`. Setelah itu, data tersebut akan diproses sesuai dengan keinginan kita, entah itu mau dimasukkan ke *database*, mau diautentikasi, atau keperluan lainnya.
 
-Sementara itu, secara khusus, berikut adalah perbedaan dari JSON dan XML dalam konteks penyimpanan dan transportasi data.
-1. JSON mendukung penggunaan *array*, sedangkan XML tidak.
-2. Sintaks JSON lebih ringkas dan mudah dipahami jika dibandingkan dengan XML.
-3. File JSON lebih ringan dan cepat jika dibandingkan dengan XML.
-4. Untuk *browser* yang tidak terlalu aman, JSON lebih rentan terhadap serangan *hacking* dibanding XML.
-5. JSON tidak menggunakan *tag*, sedangkan XML membutuhkan *tag* pembuka dan *tag* penutup.
-
-Secara khusus, berikut adalah perbedaan dari XML dan HTML.
-1. XML berfungsi untuk penyimpanan dan transportasi data, sedangkan HTML untuk menampilkan data.
-2. XML bersifat *case sensitive*, sedangkan HTML bersifat *case insensitive*.
-3. XML dalam penerapannya bebas menggunakan *tag* yang dibuat sendiri, hanya saja wajib ada *tag* penutupnya, sedangkan HTML hanya bisa menggunakan *tag* tertentu yang sesuai dan terkadang tidak memerlukan *tag* penutup.
-4. XML bersifat dinamis karena digunakan untuk transfer data, sedangkan HTML bersifat statis karena hanya digunakan untuk menampilkan data.
-
-### Pentingnya Data Delivery
-Data delivery penting dalam pengembangan aplikasi pada suatu platform sebagai sarana untuk mengirimkan data antarstack yang digunakan dalam aplikasi tersebut. Dengan adanya data delivery, kita dapat mengirimkan, menyimpan, dan menggunakan data yang dibutuhkan.
+### Alur Data pada Form
+Pertama-tama user akan memasukkan data pada *form*, spesifiknya pada *field* yang sudah disediakan. Kemudian, untuk mengambil data dari form tersebut, dapat dilakukan pemanggilan `request.POST`. Pemanggilan ini akan mengembalikan *dictionary* dengan *key* berupa nilai dari atribut `name` pada *field* dan *value* berupa data yang diisi oleh *user*. Sampai saat ini, kita sudah mendapatkan data yang dimasukkan *user* pada *form* tersebut. Selanjutnya, kita akan memasukkan data tersebut ke *database* dapat dengan memanfaatkan *method* `create(attr1=val1, attr2=val2, ...)` atau dengan melakukan instansiasi *class* yang menjadi *model*, lalu meng-*edit* atribut dari *class* tersebut satu persatu, dan terakhir menyimpannya dengan menggunakan *method* `save`. Sampai saat ini, data sudah tersimpan ke *database* Django. Untuk ditampilkan ke dalam berkas HTML, kita harus mengakses data tersebut dari *database* terlebih dahulu, dapat dengan menggunakan *method* `all` untuk mengambil semua objek dari *database*, *method* `filter` untuk mengambil objek yang memenuhi kriteria yang di-*state* pada parameter *method* tersebut, atau dapat juga dengan *method* `get` untuk mengambil tepat satu objek yang memenuhi kriteria yang di-*state* pada parameter *method* tersebut (umumnya memanfaatkan *primary key* yang bersifat unik agar bisa mengembalikan tepat satu). Setelah itu, data yang sudah didapatkan lalu dimasukkan ke `context` yang menjadi parameter fungsi `render` dari fungsi yang bersesuaian di `views.py` agar dapat diakses dan ditampilkan menggunakan *template tags* pada berkas HTML yang bersesuaian.
 
 ### Tahap-Tahap Implementasi Checklist
 Tahapan yang saya lakukan dalam mengimplementasikan checklist:
-1. Pertama-tama, saya membuat suatu aplikasi baru yang bernama "mywatchlist" dengan menjalankan perintah `python manage.py startapp mywatchlist` dan menambahkan `mywatchlist` ke `INSTALLED_APPS` di `settings.py`.
-2. Setelah itu, saya mengisi `models.py` dengan membuat *class* `MyWatchList` yang berisi atribut-atribut yang sesuai dengan *checklist* yang diberikan dengan tipe data yang sesuai. Lalu, saya melakukan *migration* dengan menjalankan `python manage.py makemigrations` dan `python manage.py migrate`. Selanjutnya, saya membuat file `initial_watchlist.json` di `fixtures` yang berisi 10 inisial data terkait film yang akan dimasukkan ke *database*. Setelah itu, data tersebut di-*load* ke *database* dengan menjalankan perintah `python manage.py loaddata initial_watchlist.json`. 
-3. Selanjutnya, saya membuat *folder* `templates` di direktori `mywatchlist` dan mengisi *folder* tersebut dengan dua buah *file* HTML yang akan ditampilkan pada `localhost:8000/mywatchlist` dan `localhost:8000/mywatchlist/html`. Untuk yang `localhost:8000/mywatchlist` saya hanya menggunakan *file* HTML kosong, yaitu `empty.html` dikarenakan *file* tersebut hanya untuk keperluan *routing*, dan data yang sebenarnya akan ditampilkan pada `localhost:8000/mywatchlist/html`, yaitu `watchlist.html`.
-4. Setelah itu, saya mengedit file `views.py` di *folder* `mywatchlist` dan menambahkan fungsi-fungsi yang diperlukan, seperti `show_watchlist` untuk `localhost:8000/mywatchlist`, `show_html` untuk `localhost:8000/mywatchlist/html`, `show_xml` untuk `localhost:8000/mywatchlist/xml`, dan `show_json` untuk `localhost:8000/mywatchlist/json`. Fungsi `show_html` akan menampilkan page HTML `watchlist.html`, `show_xml` akan menampilkan data dalam bentuk XML, dan `show_json` akan menampilkan data dalam bentuk JSON.
-5. \[BONUS\] Lalu, saya menambahkan *logic* untuk menghitung jumlah film yang sudah ditonton pada fungsi `show_html` untuk kemudian dimasukkan pada `context` agar dapat ditampilkan hasilnya di `localhost:8000/mywatchlist/html`.
-6. Sehabis itu, saya kemudian mengedit *file* `watchlist.html` yang telah dibuat dengan memasukkan hasil modifikasi *template* HTML dari tugas sebelumnya, termasuk menambahkan pesan terkait jumlah film yang sudah ditonton.
-7. Selanjutnya, saya menambahkan `path('mywatchlist/', include('mywatchlist.urls'))` di `urlpatterns` pada `urls.py` di `project_django`. Lalu, menambahkan `app_name = 'mywatchlist'` dan `urlpatterns = [path('', show_watchlist, name='show_watchlist'),path('html/', show_html, name='show_html'),path('xml/', show_xml, name='show_xml'),path('json/', show_json, name='show_json'),]` di `urls.py` milik *folder* `mywatchlist` setelah fungsi-fungsi tersebut diimpor ke dalam file tersebut.
-8. Setelah itu, saya mempersiapkan *testing* pada *tests.py* untuk mengecek apakah URL `localhost:8000/mywatchlist/html`, `localhost:8000/mywatchlist/xml`, dan `localhost:8000/mywatchlist/json` mengembalikan respon `HTTP 200 OK`. Hal ini diimplementasikan dengan membuat tiga fungsi untuk masing-masing URL, melakukan `get` dari URL tersebut dan mengecek apakah `status_code`-nya 200 atau bukan.
-9. Selanjutnya, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*. 
+1. Pertama-tama, saya membuat suatu aplikasi baru yang bernama "todolist" dengan menjalankan perintah `python manage.py startapp todolist` dan menambahkan `todolist` ke `INSTALLED_APPS` di `settings.py`.
+2. Selanjutnya, saya menambahkan `routing` berupa `path('todolist/', include('todolist.urls'))` pada `urlpatterns` di `urls.py` milik `project_django`.
+3. Setelah itu, saya membuat sebuah class `Task` di `models.py` pada aplikasi *todolist* dengan atribut seperti yang telah diberikan pada soal, yaitu `user`, `date`, `title`, dan `description`. 
+4. Lalu, saya menambahkan suatu fungsi `register` untuk meng-*handle* *user* yang ingin *register* pada `views.py` milik `todolist`. Kemudian, saya membuat berkas `register.html` sebagai halaman *register* dari *user*. Selanjutnya, saya mengimpor fungsi ini ke dalam `urls.py` pada `todolist` untuk kemudian saya tambahkan ke `urlpatterns`.
+5. Saya kemudian membuat suatu fungsi `show_todolist` untuk menampilkan daftar *todolist* pada `views.py` milik `todolist`. Kemudian, saya membuat berkas `todolist.html` sebagai halaman untuk menampilkan *todolist* dari *user*. Selanjutnya, saya mengimpor fungsi ini ke dalam `urls.py` pada `todolist` untuk kemudian saya tambahkan ke `urlpatterns`.
+6. Selanjutnya, saya membuat fungsi `login_user` sebagai `login page` dari `user` pada `views.py` milik `todolist`. Kemudian, saya membuat berkas `login.html` sebagai halaman untuk bagi *user* untuk `login`. Setelah itu, saya mengimpor fungsi ini ke dalam `urls.py` pada `todolist` untuk kemudian saya tambahkan ke `urlpatterns`.
+7. Setelah itu, saya membuat fungsi `logout_user` untuk meng-*handle* *user* yang ingin *logout* dari aplikasi. Fungsi ini akan mengembalikan fungsi `redirect` yang akan membawa *user* kembali ke halaman *login*. Setelah itu, saya mengimpor fungsi ini ke `urls.py` pada `todolist` dan memasukkannya ke `urlpatterns`. Saya juga kemudian menambahkan tombol untuk *logout* pada halaman `todolist.html` yang sudah di-*link* dengan URL `logout` yang berisi mekanisme *logout user*.
+8. Selanjutnya, saya akan melakukan restriksi akses terhadap halaman `todolist`, yaitu user yang sudah login saja yang boleh masuk, dengan cara mengimpor `login_required` pada `views.py` dan menambahkan kode `@login_required(login_url='/todolist/login/')` di atas fungsi `show_todolist`.
+9. Sehabis itu, saya membuat suatu fungsi `create_task` pada `views.py` yang berfungsi untuk meng-*handle* *user* yang ingin membuat *task* baru. Saya lalu mengambil data dari *form* yang sudah diisi oleh *user* dengan memanfaatkan `request.POST` untuk kemudian siap dimasukkan ke database. Kemudian, saya membuat berkas `new_task.html` yang berisi *form* bagi *user* untuk memasukkan detail terkait *task* baru. Lalu, saya membuat *route* ke *page* ini dengan mengimpor fungsi `create_task` pada `urls.py` pada `todolist` dan memasukkannya ke `urlpatterns`. Terkahir, saya menambahkan potongan kode `@login_required(login_url='/todolist/login/')` di atas definisi fungsi `create_task` ini.
+10. [BONUS] Selanjutnya, saya membuat tambahan atribut pada `class Task` yaitu `is_finished` dengan *default value False*. Setelah itu, saya membuat skema migrasi dan melakukan migrasi dengan menjalankan perintah `python manage.py makemigrations` dan `python manage.py migrate`.
+11. [BONUS] Lalu, saya membuat fungsi baru yang bernama `delete_task` pada `views.py` yang menerima parameter `request` dan `id`. Fungsi ini berfungsi untuk menghapus *instance* dengan `id` yang di-*pass* ke parameter tersebut. Caranya adalah dengan mengambil objek tersebut dari *database* dengan menggunakan *method* `get` berdasarkan `id` lalu dihapus dengan *method* `delete`. Setelah itu, saya mengimpor fungsi ini ke `urls.py` pada `todolist` dan memasukkannya ke `urlpatterns`. Saya kemudian membuat suatu kolom baru di tabel pada `todolist.html` untuk menghapus objek yang bersangkutan.
+12. [BONUS] Setelah itu, saya membuat fungsi yang bernama `change_status` pada `views.py` yang menerima parameter `request` dan `id` untuk mengubah status dari atribut `is_finished` dari `True` ke `False` atau sebaliknya. Sama seperti pada *step* sebelumnya, saya pertama-tama mengambil objek tersebut dari *database* dengan menggunakan *method* `get` berdasarkan `id`, lalu saya mengubah atribut dari objek tersebut. Selanjutnya, saya menyimpan perubahan tersebut dengan memanfaatkan *method* `save`. Setelah itu, saya mengimpor fungsi ini ke `urls.py` pada `todolist` dan memasukkannya ke `urlpatterns`. Kemudian, saya membuat dua kolom baru pada tabel di `todolist.html` untuk menampilkan status dari *task* dan tombol untuk mengubah status tersebut.
+13. Untuk melakukan *tracking* perubahan pada *database*, saya membuat akun *superuser* agar dapat mengakses *Django Admin*. Lalu, saya menambahkan model `Task` ke dalam `admin.py`.
+14. Selanjutnya, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*.
+
+### Username dan Password
+1. USERNAME: dummy1   PASSWORD: abc43210987
+2. USERNAME: dummy2   PASSWORD: 0987abcd4321
 
 ### Referensi
-https://www.dicoding.com/blog/apa-itu-json/<br>
-https://www.geeksforgeeks.org/difference-between-json-and-xml/<br>
-https://www.geeksforgeeks.org/html-vs-xml/<br>
-https://www.dewaweb.com/blog/apa-itu-xml/<br>
+https://www.educative.io/answers/what-is-a-csrf-token-in-django<br>
