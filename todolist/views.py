@@ -23,7 +23,7 @@ def register(request):
         form = UserCreationForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, 'Akun telah berhasil dibuat!')
+            messages.success(request, 'Successfully created an account')
             return redirect('todolist:login')
     
     context = {'form': form}
@@ -38,7 +38,7 @@ def login_user(request):
             login(request, user)
             return redirect('todolist:show_todolist')
         else:
-            messages.info(request, 'Username atau Password salah!')
+            messages.info(request, 'Username or password is wrong')
     context = {}
     return render(request, 'login.html', context)
 
@@ -60,13 +60,21 @@ def create_task(request):
     context = {}
     return render(request, 'new_task.html', context)
 
+@login_required(login_url='/todolist/login/')
 def delete_task(request, id):
     task = Task.objects.get(id=id)
-    task.delete()
+    if task.user == request.user:
+        task.delete()
+    else:
+        messages.info(request, "You can't delete this task")
     return redirect('todolist:show_todolist')
 
+@login_required(login_url='/todolist/login/')
 def change_status(request, id):
     task = Task.objects.get(id=id)
-    task.is_finished = not task.is_finished
-    task.save()
+    if task.user == request.user:
+        task.is_finished = not task.is_finished
+        task.save()
+    else:
+        messages.info(request, "You can't change the status of this task")
     return redirect('todolist:show_todolist')
