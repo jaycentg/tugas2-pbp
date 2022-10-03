@@ -2,35 +2,40 @@
 
 {% block meta %}
 <title>New Task</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
 {% endblock meta %}
 
 {% block content %}
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Comforter+Brush&display=swap" rel="stylesheet">
-<style>
-    input, textarea{
-        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-        padding: 5px;
-        text-align: center;
-    }
-</style>
-<div class = "new-task" style="text-align: center;">
-
-    <h1>Create Your New Task</h1>
-
-    <form method="POST" action="">
-        {% csrf_token %}
-            <h2 style="text-align: center;">Task Name: </h2>
-            <input type="text" name="taskname" placeholder="Task Name" class="form-control" style="padding: 10px; width: 500px" required>
-                
-            <h2 style="text-align: center;">Task Description: </h2>
-            <textarea rows="5" cols="66" name="taskdesc" placeholder="Task Description" class="form-control" style="padding: 10px;"></textarea>
-        
-            <br>
-            <br>
-            <input class="btn login_btn" type="submit" value="Save" style="width: 200px">
-    </form>
-</div>
-
+<body>
+    <nav class="navbar navbar-expand-sm mb-3 p-2" style="background-color: #ADD8E6;">
+        <div class="container-fluid">
+          <span class="navbar-brand m-2 h-1 fw-bold">To-Do List</span>
+          <ul class="navbar-nav ml-auto">
+            <li class="navbar-text p-2 m-2 fw-bold">{{username}}</li>
+            <li><a class="btn btn-danger m-2" href="{% url 'todolist:logout' %}" role="button">Logout</a></li>
+          </ul>
+        </div>
+      </nav>
+    <div class="text-center">
+        <span class="h1 fw-bold">Create Your New Task</span>
+        <form method="POST" action="">
+            {% csrf_token %}
+            <div class="m-3 p-1">
+                <label for="exampleFormControlInput1" class="form-label h4">Task Name</label>
+                <input type="text" name="taskname" class="form-control" id="exampleFormControlInput1" placeholder="Task Name" required>
+            </div>
+            <div class="m-3 p-1">
+                <label for="exampleFormControlInput1" class="form-label h4">Task Description</label>
+                <textarea name="taskdesc" class="form-control" id="exampleFormControlInput1" placeholder="Task Description" rows="5"></textarea>
+            </div>
+            <div class="row m-2">
+                <input class="col btn btn-success m-2" type="submit" value="Save">
+                <a class="col btn btn-danger m-2" href="/todolist/" role="button">Discard and Go Back</a>
+              </div>
+        </form>
+    </div>
+</body>
 {% endblock content %}
