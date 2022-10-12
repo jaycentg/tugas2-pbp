@@ -1,4 +1,3 @@
-from telnetlib import STATUS
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
