@@ -1,3 +1,4 @@
+from telnetlib import STATUS
 from django.shortcuts import render
 from django.shortcuts import redirect
 from django.contrib.auth.forms import UserCreationForm
@@ -5,6 +6,8 @@ from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from todolist.models import Task
 from django.contrib.auth.decorators import login_required
+from django.http import HttpResponse, JsonResponse
+from django.core import serializers
 
 @login_required(login_url='/todolist/login/')
 def show_todolist(request):
@@ -36,7 +39,7 @@ def login_user(request):
         user = authenticate(request, username=username, password=password)
         if user is not None:
             login(request, user)
-            return redirect('todolist:show_todolist')
+            return redirect('todolist:show_todolist_ajax')
         else:
             messages.info(request, 'Username or password is wrong')
     context = {}
@@ -67,7 +70,7 @@ def delete_task(request, id):
         task.delete()
     else:
         messages.info(request, "You can't delete this task")
-    return redirect('todolist:show_todolist')
+    return redirect('todolist:show_todolist_ajax')
 
 @login_required(login_url='/todolist/login/')
 def change_status(request, id):
@@ -77,4 +80,40 @@ def change_status(request, id):
         task.save()
     else:
         messages.info(request, "You can't change the status of this task")
-    return redirect('todolist:show_todolist')
+    return redirect('todolist:show_todolist_ajax')
+
+@login_required(login_url='/todolist/login/')
+def show_json(request):
+    data = Task.objects.filter(user=request.user)
+    return HttpResponse(serializers.serialize("json", data), content_type="application/json")
+
+@login_required(login_url='/todolist/login/')
+def show_todolist_ajax(request):
+    context = {
+        'username': request.user,
+    }
+    return render(request, "todolist.html", context)
+
+@login_required(login_url='/todolist/login/')
+def add_task_ajax(request):
+    if request.POST.get('action') == 'post':
+        user = request.user
+        # dari data yang ada pada jQuery
+        title = request.POST.get('title')
+        description = request.POST.get('description')
+
+        Task.objects.create(user=user, title=title, description=description)
+        return JsonResponse({'status':'Task is added successfully'})
+    else:
+        return JsonResponse({'status': 'Invalid request'}, status=400)
+
+@login_required(login_url='/todolist/login/')
+def delete_ajax(request, id):
+    task = Task.objects.get(id=id)
+    if task.user == request.user:
+        task.delete()
+        return JsonResponse({'status': 'Task is deleted successfully'})
+    else:
+        messages.info(request, "You can't delete this task")
+        return JsonResponse({'status': 'Invalid deletion'}, status=403)
+    

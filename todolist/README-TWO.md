@@ -1,0 +1,37 @@
+# Penjelasan Tugas 6 PBP
+
+## Identitas
+Nama    : Jaycent Gunawan Ongris<br>
+NPM     : 2106750231<br>
+Kelas   : F
+
+## Link Hasil Deploy
+Link untuk menuju ke web yang sudah di-deploy dapat diklik di [sini](https://tugas-pbp-2.herokuapp.com/todolist/login/).
+
+## Jawaban dari Pertanyaan
+### Asynchronous Programming vs Synchronous Programming
+Synchronous programming adalah suatu konsep pemrograman di mana kode-kode program dijalankan secara sekuensial, yakni dijalankan satu-satu secara berurutan menurut urutan pada antrian eksekusi program. Sedangkan, asynchronous programming adalah suatu konsep di mana kode-kode program dapat dieksekusi secara bersamaan tanpa perlu menunggu hingga eksekusi kode yang sebelumnya selesai.
+
+### Event-Driven Programming
+Event-driven programming merupakan suatu paradigma pemrograman di mana alur jalannya program ditentukan oleh *event* tertentu, seperti berdasarkan *user actions* (mengklik tombol, dll.), sensor tertentu, atau dapat berupa pesan dari program lainnya. Paradigma ini sering digunakan pada aplikasi-aplikasi yang jalannya berdasarkan *input* dari *user*, seperti *Graphical User Interface*. Salah satu contoh penerapan event-driven programming pada tugas ini adalah ketika *user* menekan tombol `Add Task` pada HTML *page*, maka akan muncul *window* *modal* bagi *user* untuk memasukkan *input*.  
+
+### Asynchronous Programming pada AJAX
+AJAX merupakan suatu *tool* untuk menerapkan asynchronous programming pada halaman web. Dalam hal ini, AJAX dapat membuat halaman web ter-*update* secara asynchronous, yaitu *browser* tidak perlu untuk me-*reload* keseluruhan halaman web jika hanya sebagian kecil dari halaman web yang mengalami perubahan, cukup bagian tersebut saja yang di-*update*. 
+
+### Tahap-Tahap Implementasi Checklist
+Tahapan yang saya lakukan dalam mengimplementasikan checklist:
+1. Pertama-tama, saya membuat suatu fungsi pada `views.py` yang berfungsi untuk mengembalikan data *task* yang dimiliki oleh suatu *user* dalam bentuk JSON. Fungsi ini merupakan fungsi `show_json()`. Kemudian, saya menambahkan *routing* yang menjalankan fungsi ini pada `urls.py` milik *folder* `todolist`, yakni dengan menambahkan `path('json/', show_json, name='show-json')` pada `urlpatterns`. 
+2.  Selanjutnya, saya membuat suatu fungsi pada `views.py` lagi yang berfungsi untuk me-*render* berkas HTML `todolist.html` dengan `context` yang berisi *username* dari *user* yang sedang *login*. Fungsi ini saya namai `show_todolist_ajax()`. Lalu, saya mengubah *path* utama dari *app* `todolist` ke fungsi ini, yaitu dengan mengubah elemen pertama dari `urlpatterns` menjadi `path('', show_todolist_ajax, name='show_todolist_ajax')` pada `urls.py`.
+3. Selanjutnya, pada berkas HTML `todolist.html`, saya menambahkan *modal* menggunakan Bootstrap sebagai tempat bagi user untuk mengisi data terkait *task* yang ingin dimasukkan ke dalam *database* `todolist`. Saya membuat *field* nama *task* dengan name `taskname` dan *field* deskripsi *task* dengan nama `taskdesc`.
+4. Setelah itu, saya menerapkan AJAX untuk menampilkan data di halaman web secara *asynchronous* dengan membuat kode JavaScript pada tag `script`. Pertama-tama, saya membuat suatu fungsi `getData()` berdasarkan URL yang dimasukkan. Fungsi ini akan mengembalikan data JSON dari `todolist` suatu user. Data tersebut kemudian di-*pass* sebagai argumen fungsi `show_data()` yang akan dijalankan selanjutnya. Fungsi `show_data()` yang menerima argumen data tersebut kemudian didefinisikan. Selanjutnya, akan dicek jika data yang ada pada argumen kosong, maka `innerHTML` dari elemen dengan id `task-cards` akan diisi dengan pesan "No Task", sedangkan jika data tersebut ada (anggotanya > 0), akan dilakukan *loop* di tiap data tersebut untuk mengambil elemen yang akan ditampilkan, lalu di-*append* ke *variable* `card`. Fungsi ini juga akan mengecek *is_finished* dari task apakah *true* atau *false*. Jika *true*, maka akan ditampilkan *badge pill* hijau di samping nama *task* di *card*, sedangkan jika *false*, akan ditampilkan *badge pill* merah di samping nama *task* di *card*. Selanjutnya, `innerHTML` dari elemen dengan id `task-cards` akan diisi dengan variable `card`. 
+5. Selanjutnya, pada `$(document).ready(function(){})` akan dipanggil `getData()` untuk menampilkan data setelah DOM berhasil di-*load*. Selain itu, jika *user* menekan `button`, maka akan dipanggil juga `getData()` agar data pada halaman web terupdate. Sampai saat ini, data sudah berhasil ditampilkan secara *asynchronous*.
+6. Setelah itu, saya akan menghubungkan tombol `Add Task` dengan *modal* agar *modal* dapat muncul setelah diklik.
+7. Selanjutnya, saya membuat fungsi pada `views.py` yang baru untuk menambahkan *task* yang dimasukkan oleh *user* ke *database*. Fungsi ini bernama `add_task_ajax()` yang akan mengembalikan `JsonResponse` yang berisi status dari penambahan *task*, apakah berhasil atau tidak. Saya kemudian menambahkan `path('add/', add_task_ajax, name='add-task-ajax')` di `urls.py` untuk menjalankan fungsi tersebut. Pada `script` di `todolist.html`, saya memanfaatkan `jQuery` untuk melakukan submisi data ke path yang sudah dibuat. Kemudian, saya menambahkan `preventDefault()` dan pada `$.ajax({})` saya isi dengan nilai yang bersesuaian, seperti URL, HTTP *request method*, data yang akan dikirim, `dataType`, dan fungsi yang akan dijalankan jika penambahan *task* berhasil. Dalam hal ini, saya akan mencetak ke `console` bahwa *task* sudah berhasil ditambahkan, memanggil fungsi `getData()` agar data di halaman utama ter-*update*, menutup *modal*, serta menghapus isi dari *fields* pada *modal* dengan memanggil `clearFields()`. 
+8. [BONUS] Setelah itu, saya membuat suatu fungsi baru lagi yang bernama `delete_ajax()` yang menerima parameter id dari *task* yang akan dihapus. Fungsi ini akan diapnngil ketika *user* menekan tombol `Delete Task` pada *card task* yang bersesuaian. Saya memanfaatkan *path* `delete/<int:id>` pada `urls.py` untuk menjalankan fungsi ini. Fungsi ini akan mengambil *task* yang akan dihapus, lalu menghapus *task* tersebut jika *user*-nya valid. Fungsi ini juga akan mengembalikan `JsonResponse` yang berisi status dari penghapusan *task*, apakah berhasil atau tidak. Selanjutnya, saya membuat fungsi `deleteData()` yang menerima parameter id pada *script* di `todolist.html`, yang kemudian didalamnya saya tambahkan `$.ajax({})`. Saya kemudian memasukkan nilai yang bersesuaian untuk tiap `key` pada `$.ajax({})` ini, seperti tipe HTTP *request method* yang digunakan, URL yang akan dipanggil, dataType, *headers*, dan fungsi yang akan dijalankan jika penghapusan data sukses. Dalam hal ini, fungsi tersebut akan mencetak ke `console` bahwa *task* sudah berhasil dihapus dan memanggil fungsi `getData()`.
+9. Selanjutnya, saya menambahkan restriksi akses pada fungsi-fungsi di `views.py` agar hanya dapat diakses oleh *user* yang sudah login.
+10. Saya juga membuat fungsi `clearFields()` pada *script* di `todolist.html` untuk menghapus isi dari *fields* pada modal. Fungsi ini dipanggil jika *user* menutup *modal*, mengklik `Discard`, atau ketika *user* *save task* yang sudah dibuat.
+11. Terakhir, saya melakukan `add`, `commit`, dan `push` ke GitHub, lalu melakukan *re-run jobs* agar perubahan yang telah saya buat ter-*deploy*.
+### Referensi
+https://community.algostudio.net/memahami-synchronous-dan-asynchronous-dalam-pemrograman/<br>
+http://www.myspsolution.com/news-events/solace-event-driven/<br>
+https://www.thoughtco.com/use-asynchronous-or-synchronous-ajax-2037228

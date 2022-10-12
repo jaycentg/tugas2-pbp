@@ -6,6 +6,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-iYQeCzEYFbKjA/T2uDLTpkwGzCiq6soy8tYaI1GyVh/UjpbCx/TYkiZhlZB6+fzT" crossorigin="anonymous">
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.1/dist/js/bootstrap.bundle.min.js" integrity="sha384-u1OknCvxWvY5kfmNBILK2hRnQC3Pr17a+RTT6rIHI7NnikvbZlHgTPOOmMi466C8" crossorigin="anonymous"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+
 {% load static %}
 <link rel="stylesheet" href="{% static 'css\todolist.css' %}">
 {% endblock meta %}
@@ -17,49 +19,146 @@
       <span class="navbar-brand m-2 h-1 fw-bold">To-Do List</span>
       <ul class="navbar-nav ml-auto">
         <li class="navbar-text p-2 m-2 fw-bold">{{username}}</li>
-        <li><a class="btn btn btn-primary m-2" href="{% url 'todolist:create-task' %}" role="button">Add New Task</a></li>
+        <li><button type="button" class="btn btn-primary m-2" data-bs-toggle="modal" data-bs-target="#create-new">Add Task</button></li>
         <li><a class="btn btn-danger m-2" href="{% url 'todolist:logout' %}" role="button">Logout</a></li>
       </ul>
     </div>
   </nav>
-  {% if task_list %}
-      {% for task in task_list %}
-        <div class="card p-1 m-4 shadow-lg">
-          <div class="card-body">
-            <div class="title-status">
-              <p class="card-title h4">{{task.title}}</h4>
-              {% if task.is_finished %}
-                <span class="badge rounded-pill bg-success align-top">Finished</span>
-              {% else %}
-                <span class="badge rounded-pill bg-danger align-top">Not Finished</span>
-              {% endif %}
+  <div class="modal fade" id="create-new" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="staticBackdropLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="staticBackdropLabel">Add New Task</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close" onclick="clearFields()"></button>
+        </div>
+        <div class="modal-body">
+          <form method="POST" action="" id="new-task">
+            {% csrf_token %}
+            <div class="m-3 p-1">
+                <label for="exampleFormControlInput1" class="form-label h5">Task Name</label>
+                <input type="text" name="taskname" class="form-control" id="taskname" placeholder="Task Name" required>
             </div>
-            <p class="card-text">{{task.description}}</p>
-            <p class="card-text"><small class="text-muted">Created on {{task.date}}</small></p>
-          </div>
-          <div class="row m-2">
-            <a class="col btn btn-outline-primary m-2" href="change/{{task.id}}" role="button">Change Status</a>
-            <a class="col btn btn-outline-danger m-2" href="delete/{{task.id}}" role="button">Delete Task</a>
-          </div>
+            <div class="m-3 p-1">
+                <label for="exampleFormControlInput1" class="form-label h5">Task Description</label>
+                <textarea name="taskdesc" class="form-control" id="taskdesc" placeholder="Task Description" rows="5"></textarea>
+            </div>
+            <button type="button" class="btn btn-danger" data-bs-dismiss="modal" onclick="clearFields()">Discard</button>
+            <button type="submit" class="btn btn-submit btn-primary">Save</button>
+          </form>
+        </div>
       </div>
-      {% endfor %}
-      </table>
-      <br>
-    {% else %}
-      <div class="msg text-center">
-          <div class="fw-bold h1">No Task :(</div>
-          <div class="fw-normal text-muted">Add your first task by clicking the "Add New Task" button above</div>
-      </div>
-    {% endif %}
-
-    {% if messages %}
-      {% for message in messages %}
+    </div>
+  </div>
+  <div id="task-cards"></div> 
+  {% if messages %}
+    {% for message in messages %}
       <div class="alert alert-primary alert-dismissible fade show mx-4" role="alert">
         {{message}}
         <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
       </div>
-      {% endfor %}
+    {% endfor %}
   {% endif %}
-    
+
+  <script>
+  function getData(){
+    $.get('/todolist/json/', function(data){
+      showData(data);
+    })
+  };
+
+  function showData(data){
+    if (data.length == 0){
+      let msg = `<div class="msg text-center">
+                  <div class="fw-bold h1">No Task :(</div>
+                  <div class="fw-normal text-muted">Add your first task by clicking the "Add Task" button above</div>
+                  </div>`;
+      document.getElementById('task-cards').innerHTML = msg;
+    } else{
+      let card = '';
+      for (let task of data){
+        if (task.fields.is_finished){
+          card += `<div class="card p-1 m-4 shadow-lg">
+            <div class="card-body">
+              <div class="title-status">
+                <p class="card-title h4">${task.fields.title}</h4>
+                  <span class="badge rounded-pill bg-success align-top">Finished</span>
+              </div>
+              <p class="card-text">${task.fields.description}</p>
+              <p class="card-text"><small class="text-muted">Created on ${task.fields.date}</small></p>
+            </div>
+            <div class="row m-2">
+              <a class="col btn btn-outline-primary m-2" href="change/${task.pk}" role="button">Change Status</a>
+              <a class="col btn btn-outline-danger m-2 del-task" onclick="deleteData(${task.pk})" role="button">Delete Task</a>
+            </div>
+            </div>`;
+        } else{
+          card += `<div class="card p-1 m-4 shadow-lg">
+            <div class="card-body">
+              <div class="title-status">
+                <p class="card-title h4">${task.fields.title}</h4>
+                  <span class="badge rounded-pill bg-danger align-top">Not Finished</span>
+              </div>
+              <p class="card-text">${task.fields.description}</p>
+              <p class="card-text"><small class="text-muted">Created on ${task.fields.date}</small></p>
+            </div>
+            <div class="row m-2">
+              <a class="col btn btn-outline-primary m-2" href="change/${task.pk}" role="button">Change Status</a>
+              <a class="col btn btn-outline-danger m-2 del-task" onclick="deleteData(${task.pk})" role="button">Delete Task</a>
+            </div>
+            </div>`;
+        } 
+      };
+      document.getElementById('task-cards').innerHTML = card;
+    };  
+  };
+
+  function clearFields(){
+    $("#new-task")[0].reset();
+  }
+
+  function deleteData(id){
+    $.ajax({
+      type: 'DELETE',
+      url: '/todolist/delete/' + id,
+      dataType: 'json',
+      headers: {
+        "X-CSRFTOKEN": "{{ csrf_token }}"
+      },
+      success: function(data){
+        console.log("Task is deleted successfully");
+        getData();
+      }
+    })
+  }
+
+  $(document).ready(function(){
+    getData();
+    $("button").click(function (){
+      getData();
+    });
+  });
+
+  $(document).on('submit', '#new-task', function(e){
+    e.preventDefault();
+    $.ajax({
+      type: 'POST',
+      url: '/todolist/add/',
+      data: {
+        title: $('#taskname').val(),
+        description: $('#taskdesc').val(),
+        csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val(),
+        action:'post',
+      },
+      dataType: 'json',
+      success: function(data){
+        console.log("Task is created successfully");
+        getData();
+        $('#create-new').modal('hide');
+        $('.modal-backdrop').remove();
+        clearFields()
+      }
+    })
+  })
+</script>  
   </body>
  {% endblock content %}
